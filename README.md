@@ -2,6 +2,14 @@
 
 Catch segfaults and show a backtrace, works for both Windows/Linux
 
+
+# TODO:
+
+- [ ] clean up the code
+- [ ] port core.demangle and make it portable (make it work in -betterC)
+- [ ] add support for more targets
+- [ ] make it work with other languages (static/shared library)
+
 # How to use in my D program:
 
 
