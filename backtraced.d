@@ -83,7 +83,7 @@ int ends_with(const(char)* str, const(char)* suffix)
     return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 
-void register()
+extern(C) export void register()
 {
     SetUnhandledExceptionFilter(&TopLevelExceptionHandler); 
 }
@@ -100,7 +100,7 @@ import core.sys.linux.execinfo: backtrace, backtrace_symbols;
 import core.sys.linux.dlfcn: dladdr, dladdr1, Dl_info, RTLD_DL_LINKMAP;
 import core.sys.linux.link: link_map;
 
-void register()
+extern(C) export void register()
 {
     signal(SIGSEGV, &handler);
     signal(SIGUSR1, &handler);
