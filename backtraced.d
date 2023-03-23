@@ -1,6 +1,7 @@
 module backtraced;
 
-version(Windows):
+version(Windows)
+{
 
 pragma(lib, "dbghelp.lib");
 import core.sys.windows.windows;
@@ -87,8 +88,10 @@ extern(C) export void register()
 {
     SetUnhandledExceptionFilter(&TopLevelExceptionHandler); 
 }
+}
 
-version(Posix):
+version(Posix)
+{
 import core.stdc.signal: SIGSEGV, SIGFPE, SIGILL, SIGABRT, signal;
 import core.stdc.stdlib: free, exit;
 import core.stdc.string: strlen, memcpy;
@@ -99,6 +102,7 @@ import core.sys.posix.stdio: popen, pclose;
 import core.sys.linux.execinfo: backtrace, backtrace_symbols;
 import core.sys.linux.dlfcn: dladdr, dladdr1, Dl_info, RTLD_DL_LINKMAP;
 import core.sys.linux.link: link_map;
+import core.demangle: demangle;
 
 extern(C) export void register()
 {
@@ -108,6 +112,7 @@ extern(C) export void register()
 
 
 // TODO: clean this mess
+// TODO: use core.demangle instead
 extern (C) void handler(int sig) nothrow @nogc
 {
     enum MAX_DEPTH = 32;
@@ -206,4 +211,5 @@ size_t convert_to_vma(size_t addr) nothrow @nogc
     link_map* link_map;
     dladdr1(cast(void*) addr, &info, cast(void**)&link_map, RTLD_DL_LINKMAP);
     return addr - link_map.l_addr;
+}
 }
